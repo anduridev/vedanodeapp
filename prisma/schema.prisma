@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Division {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  totalRooms Int
+  address    String
+  guests     Guest[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+model Guest {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String      @unique
+  dob          DateTime?
+  gender       String?
+  aadharNumber String?
+  fee          Float?
+  joiningDate  DateTime?
+  roomNo       Int?
+  building     String?
+  sharingType  String?
+  paymentMode  PaymentMode
+  phoneNumber  String?
+  divisionId   String      @db.ObjectId
+  division     Division    @relation(fields: [divisionId], references: [id])
+  disabled     Boolean     @default(false)
+  bills        Bill[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Stock {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  quantity       Int
+  price          Float
+  dateOfPurchase DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Bill {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float
+  remarks   String
+  guestId   String   @db.ObjectId
+  guest     Guest    @relation(fields: [guestId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum PaymentMode {
+  MONTHLY
+  WEEKLY
+  DAILY
+}
