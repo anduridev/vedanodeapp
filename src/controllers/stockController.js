@@ -4,6 +4,9 @@ const stockSchema = require("../schema/stockSchema");
 
 async function createStockItem(req, res) {
     const data = req.body;
+    data.dateOfPurchase = new Date(data.dateOfPurchase);
+    console.log(data)
+
     try {
         const validate = stockSchema.validate(data);
         if (validate.error) {
@@ -13,6 +16,7 @@ async function createStockItem(req, res) {
             res.status(200).send(result);
         }
     } catch (error) {
+        console.log(error)
         res.status(400).send(error);
     }
 }

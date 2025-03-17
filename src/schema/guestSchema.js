@@ -13,6 +13,7 @@ const guestSchema = Joi.object({
     sharingType: Joi.string().optional(),
     paymentMode: Joi.string().valid('MONTHLY', 'WEEKLY', 'DAILY').required(),
     phoneNumber: Joi.string().optional(),
+    divisionId:Joi.string(),
 });
 
 module.exports = guestSchema;
