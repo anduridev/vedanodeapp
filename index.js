@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const auth = require('./src/middlewares/auth')
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
@@ -9,6 +10,7 @@ const guestRoutes = require('./src/routes/guestRoutes');
 const stockRoutes = require("./src/routes/stockRoutes");
 const divisionRoute = require('./src/routes/divisionRoutes');
 const app = express();
+app.use(auth);
 app.use(cors());
 app.use(bodyParser.json());
 // Routes
